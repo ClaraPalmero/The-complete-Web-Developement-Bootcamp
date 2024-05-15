@@ -66,22 +66,24 @@ buttons.forEach(button => {
 
 
 // ----Way 3:
-const crash = new Audio("sounds/crash.mp3");
-const kick = new Audio("sounds/kick-bass.mp3");
-const snare = new Audio("sounds/snare.mp3");
-const tom1 = new Audio("sounds/tom1.mp3");
-const tom2 = new Audio("sounds/tom2.mp3");
-const tom3 = new Audio("sounds/tom3.mp3");
-const tom4 = new Audio("sounds/tom4.mp3");
 
-const nuemberOfButtons = document.querySelectorAll(".drum").length;
-for (let i = 0; i < nuemberOfButtons; i++){
+const numberOfButtons = document.querySelectorAll(".drum").length;
 
-    document.querySelectorAll(".drum")[i].addEventListener("click", function(){
-     
+for (let i = 0; i < numberOfButtons; i++){
+    document.querySelectorAll(".drum")[i].addEventListener("click", function(){     
       const buttonInnerHtml = this.innerHTML;
+      makeSound(buttonInnerHtml);  
+      buttonAnimation(buttonInnerHtml);    
+    })
+}
 
-      switch (buttonInnerHtml) {
+document.addEventListener("keydown", function(event){
+    makeSound(event.key)
+    buttonAnimation(event.key);
+})
+
+const makeSound = (key) => {
+switch (key) {
         case "w":
             const crash = new Audio("sounds/crash.mp3");
             crash.play();
@@ -117,14 +119,16 @@ for (let i = 0; i < nuemberOfButtons; i++){
             tom4.play();
             break; 
         
-        default: console.log(buttonInnerHtml)
+        default: console.log(key)
             
       }
-    })
+
 }
 
-
-
-
-
-
+const buttonAnimation = (currentKey) =>{
+   const activeButton = document.querySelector(`.${currentKey}`);
+   activeButton.classList.add("pressed");
+   setTimeout(()=>{
+    activeButton.classList.remove("pressed")
+   }, 100)
+}
